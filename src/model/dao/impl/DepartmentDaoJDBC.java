@@ -40,12 +40,34 @@ public class DepartmentDaoJDBC implements ObjectDao<Department> {
 
     @Override
     public void update(Department entity, Integer id) {
+        PreparedStatement st = null;
 
+        try {
+            st = conn.prepareStatement("UPDATE department SET name = ? WHERE id = ?");
+            st.setString(1, entity.getName());
+            st.setInt(2, id);
+
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     @Override
     public void deleteById(Integer id) {
+        PreparedStatement st = null;
 
+        try {
+            st = conn.prepareStatement("DELETE * FROM department WHERE id = ?");
+            st.setInt(1, id);
+
+            int rows = st.executeUpdate();
+            if (rows == 0) {
+                throw new DbException("Department not found.");
+            }
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     @Override
