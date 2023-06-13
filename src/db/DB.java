@@ -8,12 +8,15 @@ import java.util.Properties;
 public class DB {
     private static Connection conn = null;
 
-    public static Connection getConnection() {
+    public static Connection getConnection() throws ClassNotFoundException {
         if (conn == null) {
             try  {
+                Class.forName("org.postgresql.Driver");
                 Properties props = loadProperties();
                 String url = props.getProperty("dburl");
+                System.out.println(url);
                 conn = DriverManager.getConnection(url, props);
+                System.out.println("SUCCESS");
             } catch (SQLException e) {
                 throw new DbException(e.getMessage());
             }

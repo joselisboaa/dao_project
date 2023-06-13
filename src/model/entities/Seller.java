@@ -42,6 +42,12 @@ public class Seller implements Serializable {
         return Objects.hash(id, name, email, birthDate, salary, department);
     }
 
+    @Override
+    public String toString() {
+        return this.id + " " + this.name + " " + this.email + " " +
+                this.birthDate + " " + this.salary + " " + this.department;
+    }
+
     public Integer getId() {
         return id;
     }
