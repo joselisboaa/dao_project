@@ -1,9 +1,9 @@
 package model.dao.impl;
 
+import db.DB;
 import db.DbException;
 import model.dao.DaoFactory;
 import model.dao.ObjectDao;
-import model.dao.SellerDao;
 import model.entities.Department;
 import model.entities.Seller;
 
@@ -33,11 +33,13 @@ public class DepartmentDaoJDBC implements ObjectDao<Department> {
 
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
         }
     }
 
     @Override
-    public void update(Department entity) {
+    public void update(Department entity, Integer id) {
 
     }
 
@@ -64,6 +66,9 @@ public class DepartmentDaoJDBC implements ObjectDao<Department> {
             return departments;
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
         }
     }
 
@@ -92,6 +97,9 @@ public class DepartmentDaoJDBC implements ObjectDao<Department> {
             return null;
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
         }
     }
 

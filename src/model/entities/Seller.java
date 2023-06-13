@@ -48,6 +48,10 @@ public class Seller implements Serializable {
                 this.birthDate + " " + this.salary + " " + this.department;
     }
 
+    public Department getDepartment() {
+        return department;
+    }
+
     public Integer getId() {
         return id;
     }

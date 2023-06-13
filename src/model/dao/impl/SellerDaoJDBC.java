@@ -24,12 +24,45 @@ public class SellerDaoJDBC implements SellerDao {
 
     @Override
     public void insert(Seller entity) {
+        PreparedStatement st = null;
 
+        try {
+            st = conn.prepareStatement("INSERT INTO seller VALUES(?, ?, ?, ?, ?, ?)");
+            st.setObject(1, entity.getId());
+            st.setObject(2, entity.getDepartment().getId());
+            st.setObject(3, entity.getName());
+            st.setObject(4, entity.getEmail());
+            st.setObject(5, entity.getBirthDate());
+            st.setObject(6, entity.getSalary());
+
+            st.executeUpdate();
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override
-    public void update(Seller entity) {
+    public void update(Seller entity, Integer id) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
 
+        try {
+            st = conn.prepareStatement("UPDATE seller SET name = ?, email = ?, birth_date = ?," +
+                    " base_salary = ?, department_id = ? WHERE id = ?");
+            st.setString(1, entity.getName());
+            st.setString(2, entity.getEmail());
+            st.setObject(3, entity.getBirthDate());
+            st.setDouble(4, entity.getSalary());
+            st.setInt(5, entity.getDepartment().getId());
+            st.setInt(6, id);
+
+            rs = st.executeQuery();
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     @Override
@@ -58,6 +91,9 @@ public class SellerDaoJDBC implements SellerDao {
             return sellerList;
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
         }
     }
 
@@ -113,6 +149,9 @@ public class SellerDaoJDBC implements SellerDao {
             return sellerList;
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+            DB.closeResultSet(rs);
         }
     }
 
