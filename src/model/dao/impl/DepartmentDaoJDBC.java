@@ -20,7 +20,17 @@ public class DepartmentDaoJDBC implements ObjectDao<Department> {
 
     @Override
     public void insert(Department entity) {
+        PreparedStatement st = null;
 
+        try {
+            st = conn.prepareStatement("INSERT INTO department VALUES(?, ?)");
+            st.setObject(1, entity.getId());
+            st.setObject(2, entity.getName());
+            st.execute();
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
     }
 
     @Override

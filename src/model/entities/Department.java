@@ -16,7 +16,7 @@ public class Department implements Serializable {
     }
 
     public String toString() {
-        return this.id + " , " + this.name;
+        return this.id + ", " + this.name;
     }
 
     public Integer getId() {

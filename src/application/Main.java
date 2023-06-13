@@ -10,16 +10,17 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
-
         ObjectDao<Seller> sellerDao = DaoFactory.createSellerDao();
         ObjectDao<Department> departmentDao = DaoFactory.createDepartmentDao();
 
-        Department department = new Department(1, "Seller");
-
         Seller seller = sellerDao.getById(1);
         Department department1 = departmentDao.getById(2);
+        Department department3 = new Department(5, "Test");
 
+        departmentDao.insert(department3);
         List<Seller> allSellers = sellerDao.getAll();
+        List<Department> allDepartments = departmentDao.getAll();
+
         System.out.println(seller);
         System.out.println("Department " + department1);
 
@@ -27,5 +28,8 @@ public class Main {
             System.out.println(sel);
         }
 
+        for (Department dep : allDepartments) {
+            System.out.println(dep);
+        }
     }
 }
