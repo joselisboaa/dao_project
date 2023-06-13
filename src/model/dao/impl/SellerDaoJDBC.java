@@ -46,7 +46,6 @@ public class SellerDaoJDBC implements SellerDao {
     @Override
     public void update(Seller entity, Integer id) {
         PreparedStatement st = null;
-        ResultSet rs = null;
 
         try {
             st = conn.prepareStatement("UPDATE seller SET name = ?, email = ?, birth_date = ?," +
@@ -58,7 +57,7 @@ public class SellerDaoJDBC implements SellerDao {
             st.setInt(5, entity.getDepartment().getId());
             st.setInt(6, id);
 
-            rs = st.executeQuery();
+            st.executeUpdate();;
 
         } catch (SQLException e) {
             throw new DbException(e.getMessage());
