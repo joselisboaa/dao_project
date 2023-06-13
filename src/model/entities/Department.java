@@ -1,12 +1,15 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Department implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer id;
     private String name;
+    private List<Seller> sellerList = new ArrayList<>();
 
     public Department() {}
 
@@ -15,8 +18,26 @@ public class Department implements Serializable {
         this.name = name;
     }
 
+    public void addSeller(Seller seller) {
+        this.sellerList.add(seller);
+    }
+
+    public List<Seller> getSellerList() {
+        return sellerList;
+    }
+
+    public StringBuilder formattedSellers() {
+        StringBuilder selers = new StringBuilder(100);
+
+        for (Seller seller : this.sellerList) {
+            selers.append(seller.toString());
+        }
+
+        return selers;
+    }
+
     public String toString() {
-        return this.id + ", " + this.name;
+        return this.id + ", " + this.name + " " + this.formattedSellers();
     }
 
     public Integer getId() {

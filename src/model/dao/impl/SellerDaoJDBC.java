@@ -3,6 +3,7 @@ package model.dao.impl;
 import db.DB;
 import db.DbException;
 import model.dao.ObjectDao;
+import model.dao.SellerDao;
 import model.entities.Department;
 import model.entities.Seller;
 
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SellerDaoJDBC implements ObjectDao<Seller> {
+public class SellerDaoJDBC implements SellerDao {
     private Connection conn;
 
     public SellerDaoJDBC(Connection conn) {
@@ -86,6 +87,32 @@ public class SellerDaoJDBC implements ObjectDao<Seller> {
         } finally {
             DB.closeStatement(st);
             DB.closeResultSet(rs);
+        }
+    }
+
+    @Override
+    public List<Seller> getByDepartment(Department department) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        List<Seller> sellerList = new ArrayList<>();
+
+        try {
+            st = conn.prepareStatement("SELECT seller.*, department.name as DepName " +
+                    "FROM seller INNER JOIN department ON seller.department_id = department.id " +
+                    "WHERE department_id = ? ORDER BY NAME");
+            st.setInt(1, department.getId());
+            rs = st.executeQuery();
+
+            while(rs.next()) {
+                Department dep = instantiateDepartment(rs);
+                Seller seller = instantiateSeller(rs, dep);
+
+                sellerList.add(seller);
+            }
+
+            return sellerList;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
         }
     }
 

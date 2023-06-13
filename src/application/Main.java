@@ -15,9 +15,7 @@ public class Main {
 
         Seller seller = sellerDao.getById(1);
         Department department1 = departmentDao.getById(2);
-        Department department3 = new Department(5, "Test");
 
-        departmentDao.insert(department3);
         List<Seller> allSellers = sellerDao.getAll();
         List<Department> allDepartments = departmentDao.getAll();
 

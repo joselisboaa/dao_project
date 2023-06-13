@@ -1,8 +1,11 @@
 package model.dao.impl;
 
 import db.DbException;
+import model.dao.DaoFactory;
 import model.dao.ObjectDao;
+import model.dao.SellerDao;
 import model.entities.Department;
+import model.entities.Seller;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -65,7 +68,7 @@ public class DepartmentDaoJDBC implements ObjectDao<Department> {
     }
 
     @Override
-    public Department getById(Integer id) {
+    public Department getById(Integer id) throws ClassNotFoundException {
         PreparedStatement st = null;
         ResultSet rs = null;
 
@@ -76,6 +79,12 @@ public class DepartmentDaoJDBC implements ObjectDao<Department> {
 
             if (rs.next()) {
                 Department department = instantiateDepartment(rs);
+                ObjectDao<Seller> sellerDao = DaoFactory.createSellerDao();
+                List<Seller> sellerList = sellerDao.getAll();
+
+                for (Seller seller : sellerList) {
+                    department.addSeller(seller);
+                }
 
                 return department;
             }
